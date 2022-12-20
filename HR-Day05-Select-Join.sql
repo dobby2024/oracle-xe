@@ -33,6 +33,13 @@ SELECT e.employee_id, e.last_name, e.department_id,
 FROM employees e JOIN departments d
 ON (e.department_id = d.department_id);
 
+
+SELECT e.employee_id, e.last_name, e.department_id,
+        d.department_id, d.location_id
+FROM employees e, departments d
+WHERE e.department_id = d.department_id;
+
+
 -- ON 절을 사용하여 3-Way 조인 생성
 SELECT employee_id, city, department_name
 FROM employees e
@@ -108,6 +115,13 @@ SELECT e.last_name, e.department_id, d.department_name
 FROM employees e LEFT OUTER JOIN departments d
 ON (e.department_id = d.department_id);
 
+SELECT e.employee_id, e.last_name, e.department_id,
+        d.department_id, d.location_id
+FROM employees e, departments d
+WHERE e.department_id = d.department_id(+);
+
+
+
 /*
 RIGHT OUTER JOIN
     EMPLOYEES 테이블에 대응되는 행이 없어도
@@ -137,7 +151,6 @@ Cross Join 생성
 SELECT last_name, department_name
 FROM employees
 CROSS JOIN departments;
-
 
 
 
