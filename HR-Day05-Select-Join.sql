@@ -61,7 +61,6 @@ WHERE e.manager_id = 149
 테이블 자체 조인
     ON 절을 사용하는 SELF JOIN
 */
-
 SELECT worker.last_name emp, manager.last_name mgr
 FROM employees worker JOIN employees manager
 ON (worker.manager_id = manager.employee_id);
@@ -89,6 +88,59 @@ SELECT e.last_name, e.salary, j.grade_level
 FROM employees e JOIN job_grades j
 ON e.salary
         BETWEEN j.lowest_sal AND j.highest_sal;
+        
+
+/*
+INNER JOIN 과 OUTER JOIN
+    INNER JOIN
+        NATURAL JOIN, USING 또는 ON 절을 사용하여 테이블을 조인
+        일치하지 않는 행은 출력에 표시 되지 않습니다.
+    OUTER JOIN
+        일치하지 않는 행도 반환 합니다.
+*/
+
+/*
+LEFT OUTER JOIN
+    DEPARTMENT  테이블에 대응되는 행이 없어도
+    왼쪽 테이블인 EMPLOYEES 테이블의 모든 행을 검색합니다.
+*/
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e LEFT OUTER JOIN departments d
+ON (e.department_id = d.department_id);
+
+/*
+RIGHT OUTER JOIN
+    EMPLOYEES 테이블에 대응되는 행이 없어도
+    오른쪽 테이블인 DEPARTMENTS 테이블의 모든 행을 검색합니다.
+*/
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e RIGHT OUTER JOIN departments d
+ON (e.department_id = d.department_id);
+
+/*
+FULL OUTER JOIN
+    DEPARTMENTS, EMPLOYEES 대응되는 행이 없어도
+    테이블의 모든행을 검색합니다.
+*/
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e FULL OUTER JOIN departments d
+ON (e.department_id = d.department_id);
+
+/*
+Cartesian Product
+    조인 조건이 잘못되거나 완전히 생략 된 경우 결과는 모든 행 조합이 표시되는 Cartesian Product로 나타납니다.
+*/
+/*
+Cross Join 생성
+    CROSS JOIN 절은 두 테이블의 교차 곱을 생성합니다.
+*/
+SELECT last_name, department_name
+FROM employees
+CROSS JOIN departments;
+
+
+
+
 
 
 
