@@ -41,6 +41,15 @@ WHERE salary =
 */
 SELECT employee_id, last_name, job_id, salary
 FROM employees
+WHERE salary IN 
+                (SELECT salary
+                FROM employees
+                WHERE job_id = 'IT_PROG')
+AND job_id <> 'IT_PROG';
+
+
+SELECT employee_id, last_name, job_id, salary
+FROM employees
 WHERE salary < ANY
                 (SELECT salary
                 FROM employees
@@ -76,3 +85,14 @@ FROM employees emp
 WHERE emp.employee_id NOT IN
                         (SELECT mgr.manager_id
                         FROM employees mgr);
+                        
+                        
+SELECT emp.last_name
+FROM employees emp
+WHERE emp.employee_id NOT IN
+                        (
+                        SELECT mgr.manager_id
+                        FROM employees mgr
+                        WHERE mgr.manager_id IS NOT NULL
+                        );
+                        
