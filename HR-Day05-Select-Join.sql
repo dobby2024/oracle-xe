@@ -70,7 +70,6 @@ ON (worker.manager_id = manager.employee_id);
 Nonequijoin
     Nonequijoin은 등호 연산자 외의 다른 연산자를 포함하는 조인 조건입니다.
     
-    
 CREATE TABLE job_grades (
 grade_level 		CHAR(1),
 lowest_sal 	NUMBER(8,2) NOT NULL,
@@ -86,6 +85,10 @@ INSERT INTO job_grades VALUES ('E', 15000, 24999);
 INSERT INTO job_grades VALUES ('F', 25000, 40000);
 COMMIT;
 */
+SELECT e.last_name, e.salary, j.grade_level
+FROM employees e JOIN job_grades j
+ON e.salary
+        BETWEEN j.lowest_sal AND j.highest_sal;
 
 
 
