@@ -93,7 +93,7 @@ WHERE department_id = 90;
 
 MONTHS_BETWEEN() - 두 날짜 간의 월수
 ADD_MONTHS() - 날짜에 월 추가
-NEXT_DAY() - 지정된 날짜의 다음날
+NEXT_DAY() - 지정된 날짜의 다음 요일
 LAST_DAY() - 월의 마지막 날
 ROUND() - 날짜 반올림
 TRUNC() - 날짜 truncate
@@ -101,7 +101,7 @@ TRUNC() - 날짜 truncate
 
 SELECT MONTHS_BETWEEN('22-12-16', '21-12-16') FROM dual;
 SELECT ADD_MONTHS('22-12-16', 1) FROM dual;
-SELECT NEXT_DAY('22-12-16', 1) FROM dual;
+SELECT NEXT_DAY('22-12-20', 1) FROM dual;
 SELECT LAST_DAY('23-02-16') FROM dual;
 SELECT ROUND(SYSDATE, 'MONTH') FROM dual;
 SELECT TRUNC(SYSDATE, 'MONTH') FROM dual;
@@ -202,6 +202,43 @@ SELECT first_name, LENGTH(first_name) "expr1",
     NULLIF(LENGTH(first_name), LENGTH(last_name)) result
 FROM employees
 ;
+
+/*
+COALESCE() 함수
+    리스트에서 null이 아닌 첫번째 표현식을 반환합니다.
+*/
+SELECT last_name, employee_id,
+        COALESCE(TO_CHAR(commission_pct), TO_CHAR(manager_id),
+                'No commission and no manager')
+FROM employees;
+
+/*
+조건부 표현식
+    SQL 문에서 IF-THEN-ELSE 논리를 사용할 수 있습니다.
+    - CASE 식
+    - DECODE() 함수
+*/
+
+/*
+CASE 식
+*/
+SELECT last_name, job_id, salary,
+    CASE job_id WHEN 'IT_PROG' THEN 1.10*salary
+                WHEN 'ST_CLERK' THEN 1.15*salary
+                WHEN 'SA_REP' THEN 1.20*salary
+    ELSE salary END "REVISED_SALARY"
+FROM employees;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
