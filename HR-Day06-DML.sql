@@ -132,6 +132,61 @@ TRUNCATE 문
 */
 TRUNCATE TABLE copy_emp;
 
+/*
+트랜잭션(Transaction)
+    데이터 처리의 한 단위입니다.
+    오라클에서 발생하는 여러 개의 SQL 명령문들을 하나의 논리적인 작업 단위로 처리하는데 
+    이를 트랜잭션이라고 합니다.
+    
+    COMMIT : SQL문의 결과를 영구적으로 DB에 반영
+    ROLLBACK : SQL문의 실행결과를 취소할 때
+    SAVEPOINT : 트랜잭션의 한지점에 표시하는 임시 저장점
+*/
+
+select * from sales_reps;
+delete from sales_reps;
+
+desc sales_reps;
+
+INSERT INTO sales_reps VALUES (1 , '피카츄', 300, 0.1);
+SAVEPOINT mypoint;
+INSERT INTO sales_reps VALUES (2 , '라이츄', 400, 0);
+INSERT INTO sales_reps VALUES (3 , '파이리', 1000, 0.3);
+INSERT INTO sales_reps VALUES (4 , '꼬부기', 1200, 0.2);
+SELECT * FROM sales_reps;
+ROLLBACK TO mypoint;
+COMMIT;
+
+/*
+SELECT 문의 FOR UPDATE 절
+    EMPLOYEES 테이블에서 job_id가 SA_REP인 행을 잠급니다.
+*/
+SELECT employee_id, salary, commission_pct, job_id
+FROM employees
+WHERE job_id = 'SA_REP'
+FOR UPDATE
+ORDER BY employee_id
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
