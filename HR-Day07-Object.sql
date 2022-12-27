@@ -132,7 +132,68 @@ NOCACHE | CACHE : NOCACHE(사용안함),
 NOORDER | ORDER : NOORDER(사용안함), 
                     ORDER(요청 순서로 값을 생성하여 발생 순서를 보장하지만 조금의 시스템 부하가 있음)
    
+채번
 */
+
+CREATE SEQUENCE my_seq
+    INCREMENT BY 1      -- 증가값(1씩증가)
+    START WITH 1        -- 시작값
+    MINVALUE 1          -- 최소값
+    MAXVALUE 99999999   -- 최대값
+    NOCYCLE             -- 최대값 도달시 시작값부터 반복안함
+    CACHE 20            -- CACHE 사용 20까지 미리저장
+    ORDER;              -- 요청 순서대로 값을 생성한다.
+
+SELECT my_seq.NEXTVAL FROM dual;
+SELECT my_seq.CURRVAL FROM dual;
+
+desc dept;
+
+INSERT INTO dept3 VALUES (my_seq.NEXTVAL, 'A', 1, SYSDATE);
+INSERT INTO dept3 VALUES (my_seq.NEXTVAL , 'B', 2, SYSDATE);
+INSERT INTO dept3 VALUES (my_seq.NEXTVAL , 'C', 1, SYSDATE);
+INSERT INTO dept3 VALUES (my_seq.NEXTVAL , 'D', 2, SYSDATE);
+ROLLBACK;
+
+-- 시퀀스 제거
+DROP SEQUENCE my_seq;
+
+
+/*
+인덱스(Index)
+    Oracle 서버 인덱스는 포인터를 사용하여 행 검색 속도를 높일 수 있는 스키마 객체입니다.
+*/
+
+-- EMPLOYEE 테이블의 LAST_NAME 열에 대한 query 액세스 속도를 향샹시킵니다.
+CREATE INDEX emp_last_name_idx 
+    ON employees(last_name);
+
+-- 인덱스 제거
+DROP INDEX emp_last_name_idx;
+
+
+
+/*
+동의어
+    동의어를 생성하여 객체에 대체 이름을 부여할 수 있습니다.
+*/
+-- 동의어 생성
+CREATE SYNONYM d_sum
+FOR dept_sum_vu;
+
+select * from d_sum;
+
+-- 동의어 제거
+DROP SYNONYM d_sum;
+
+
+
+
+
+
+    
+
+
 
 
 
