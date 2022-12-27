@@ -88,6 +88,71 @@ CREATE TABLE dept4(
     loc CHAR(1) CONSTRAINT dept4_loc_ck CHECK(loc IN('1', '2'))
     );
     
+INSERT INTO dept4 (deptno, dname, loc)
+VALUES(1, '마켓팅', 1);
+COMMIT;
+
+SELECT * FROM dept4;
+
+CREATE TABLE dept5(
+deptno NUMBER(2) PRIMARY KEY,
+dname VARCHAR2(15) NOT NULL
+);
+
+INSERT INTO dept5 (deptno, dname)
+VALUES(1, 'QA');
+
+commit;
+
+CREATE TABLE emp(
+empno NUMBER(4) PRIMARY KEY,
+ename VARCHAR2(15) NOT NULL,
+deptno NUMBER(2), 
+CONSTRAINT emp_dept5_fk FOREIGN KEY (deptno)
+    REFERENCES dept5(deptno)
+);
+
+SELECT * FROM dept5;
+
+INSERT INTO emp
+VALUES (1, 'MIKE', 1);
+commit;
+
+DELETE FROM dept5
+WHERE deptno = 1;
+
+SELECT * FROM emp;
+
+DELETE FROM emp
+WHERE deptno = 1;
+
+
+-- 제약 조건 검색하기
+SELECT * FROM user_constraints
+WHERE constraint_name = 'DEPT4_DEPTNO_PK';
+
+-- 제약 조건은 수정 불가능, 삭제만 가능합니다.
+ALTER TABLE dept4 DROP CONSTRAINT dept4_loc_ck;
+
+-- 제약 조건 추가하기
+ALTER TABLE dept4 ADD(CONSTRAINT dept4_loc2_ck CHECK(loc IN('1', '2')));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     
     
@@ -95,11 +160,6 @@ CREATE TABLE dept4(
     
     
     
-
-
-
-*/
-
 
 
 
