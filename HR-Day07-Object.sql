@@ -191,10 +191,6 @@ DROP SYNONYM d_sum;
 
 
 
-    
-
-
-
 
 
 
