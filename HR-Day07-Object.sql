@@ -187,9 +187,32 @@ select * from d_sum;
 DROP SYNONYM d_sum;
 
 
+/*
 
+ROWID와 ROWNUM
+    오라클에서 테이블을 생성하면 기본적으로 제공되는 컬럼
+    ROWID : ROW 고유의 아이디 (ROW를 수정해도 변하지 않음)
+    ROWNUM : 행의 INDEX (ROW 삭제시 변경될 수 있다)
 
+ROWID 
+    오브젝트 번호 6자리
+        해당 데이터가 속하는 오브젝트 번호다. 오브젝트별로 유일한 값을 가지고 있다.
+    상대 파일 번호 3자리
+        테이블스페이스의 상대 파일 번호를 의미하며, 각 데이터별로 유일한 값을 가진다.
+    블록 번호 6자리
+        파일 안에 어느 블록인지를 의미한다.
+    데이터 번호 3자리
+        데이터 번호는 블록별로 데이터가 저장돼 있는 순서를 뜻한다. 
+        이처럼 ROWID는 해당 데이터의 저장 위치를 가리키는 요소라고 할 수 있다.
+*/
 
+select rowid,rownum from employees;
+select rowid,rownum,last_name from employees;
+
+-- ROW의 갯수를 알고 싶다면?
+select count(*) from employees; 
+select max(rownum) from employees; 
+select count(rownum) from employees; 
 
 
 
