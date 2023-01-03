@@ -130,13 +130,14 @@ WHERE TRUNC(price) BETWEEN 3350 AND 4500;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
 
 /*
+INDEX RANGE SCAN 과 FULL TABLE SCAN
+    테이블 대부분의 데이터를 찾을때는 FULL TABLE SCAN 방식이 유리하다.
 */
 -- 100000
 SELECT COUNT(*) FROM orders;
 @clean;
 
 CREATE INDEX orders_custno_idx ON orders(custno);
-
 
 -- 버퍼 : 33561
 SELECT /*+ FULL(orders) */ MAX(orderdate)
@@ -151,17 +152,43 @@ WHERE custno BETWEEN 1 AND 100;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
 
 
--- 버퍼 : 
+-- 버퍼 : 33561
 SELECT /*+ FULL(orders) */ MAX(orderdate)
 FROM orders
 WHERE custno BETWEEN 1 AND 5000;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
 
--- 버퍼 : 
+-- 버퍼 : 50091
 SELECT /*+ INDEX(orders orders_custno_idx) */ MAX(orderdate)
 FROM orders
 WHERE custno BETWEEN 1 AND 5000;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
+
+
+/*
+INDEX FAST FULL SCAN
+    INDEX FULL SCAN은 인덱스에 포함되지 않은 컬럼이 SQL 에 포함되어 있을때도 발생하지만
+    INDEX FAST FULL SCAN은 인덱스에 포함된 컬럼들만 SQL에 사용되었을때 발생
+    
+    Multi Block I/O에 의해 리프 블록에 접근하므로, 데이터 출력 순서를 보장하지 않음
+
+*/
+@clean;
+
+CREATE INDEX emp_idx on emp(job, hiredate,deptno);
+
+SELECT /*+ INDEX_FFS(e emp_idx) */ TO_CHAR(hiredate, 'YYYYMM') yyyymm, COUNT(deptno) total
+FROM emp e
+WHERE job = 'CLERK'
+GROUP BY TO_CHAR(hiredate, 'YYYYMM')
+order by yyyymm
+;
+
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
+
+
+
+
 
 
 
